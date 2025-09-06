@@ -6,3 +6,17 @@
 .text-purple-400 {
   color: #a78bfa !important;
 }
+
+.profileImage{
+  height:50px;
+  width: 50px;
+  border-radius: 50%;
+  padding: 1px;
+  border: black 2px solid;
+  outline: none;
+}
+
+img{
+  border-radius: 50%;
+  height: 100%;
+}
