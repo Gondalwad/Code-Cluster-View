@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import validator from "./validate";
-import getProfileImg from "./getImgProgile";
+import validator from "../../jsUtils/validate";
+import getProfileImg from "../../jsUtils/getImgProgile";
 import Button from "./button";
 import user from "../../assets/img/user.png";
 
