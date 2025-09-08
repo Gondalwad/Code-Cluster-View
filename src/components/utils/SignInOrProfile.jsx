@@ -62,6 +62,9 @@ export default function SignInOrProfile() {
       }
     />
   ) : (
-    <Button redirect="/signIn" value="Sign In" />
+    <div>
+    <Button  redirect="/signIn" value="Sign In" />
+    <Button  redirect="/signUp" value="Sign Up" />
+    </div>
   );
 }

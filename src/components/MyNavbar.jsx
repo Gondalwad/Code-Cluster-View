@@ -1,11 +1,12 @@
-import { Link } from "react-router-dom";
+import { NavLink,Link } from "react-router-dom";
 import Logo from "./utils/Logo"
 import SignInOrProfile from "./utils/SignInOrProfile";
 
 export default function MyNavbar() {
   // localStorage.setItem("token","eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJGaXJzdFVzZXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3NTcxODgxMjksImV4cCI6NzkxODU0MDQ1MDk1MTM0NX0.7Da1AZM8pLB6sCJE1Z5mPCSQDmEYjXQjjfTKSTrUaWUQ4KE1Lx5iPcDhFmog_L7vLXZcna-qU8atTGTPmpSrOw")
+  
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-purple-600 sticky-top py-0">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-custom-purple sticky-top py-0">
       <div className="container-fluid">
         {/* Logo / Brand */}
         <Link className="navbar-brand fw-bold" to="/">
@@ -27,19 +28,19 @@ export default function MyNavbar() {
         </button>
 
         {/* Links */}
-        <div className="collapse navbar-collapse " id="navbarNav">
-          <ul className="navbar-nav ms-auto ">
+        <div className="collapse navbar-collapse justify-content-between" id="navbarNav">
+          <ul className="navbar-nav ms-0 me-3">
             <li className="nav-item ">
-              <Link className="nav-link active" to="/">Home</Link>
+              <NavLink className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} to="/">Home</NavLink>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/about">About</Link>
+              <NavLink className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} to="/about">About</NavLink>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/problems">Problems</Link>
+              <NavLink className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} to="/problems">Problems</NavLink>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/contact">Contact</Link>
+              <NavLink className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} to="/contact">Contact</NavLink>
             </li>
           </ul>
           {/* set button or profileImg */}

@@ -1,10 +1,14 @@
-
-.bg-purple-600 {
+*{
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.bg-custom-purple {
   background-color: #514574 !important; /* Tailwind's purple-400 */
 }
-
-.text-purple-400 {
-  color: #a78bfa !important;
+.bg-purple-300 {
+  background-color: #514574 !important; /* Tailwind's purple-400 */
+}
+.text-custom-purple {
+  color: #514574;
 }
 
 .profileImage{
