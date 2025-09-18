@@ -3,7 +3,6 @@ import Logo from "./utils/Logo"
 import SignInOrProfile from "./utils/SignInOrProfile";
 
 export default function MyNavbar() {
-  // localStorage.setItem("token","eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJGaXJzdFVzZXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3NTcxODgxMjksImV4cCI6NzkxODU0MDQ1MDk1MTM0NX0.7Da1AZM8pLB6sCJE1Z5mPCSQDmEYjXQjjfTKSTrUaWUQ4KE1Lx5iPcDhFmog_L7vLXZcna-qU8atTGTPmpSrOw")
   
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-custom-purple sticky-top py-0">

@@ -1,21 +1,21 @@
 import { Link } from "react-router-dom";
+import Button from "./utils/button";
 
-export default function ProblemCard({extraStyle}) {
+export default function ProblemCard({problemDesc,problemName,problemNo,extraStyle=""}) {
+
   return (
     <div className={"card "+extraStyle}>
       <div className="card-body">
-        <h5 className="card-title">Card title</h5>
-        <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
-        <p className="card-text">
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
+        <h6 className="card-title text-muted">Problem No: {problemNo}.</h6>
+        <h5 className="card-subtitle mb-2 ">{problemName}</h5>
+        <p className="card-text text-truncate text-muted">
+          {problemDesc}
         </p>
-        <Link to="#" className="card-link">
+        {/* <Link to="#" className="card-link">
           Card link
-        </Link>
-        <Link to="#" className="card-link">
-          Another link
-        </Link>
+        </Link> */}
+        
+        <Button redirect={"solve/"+problemName} value={"Solve"}></Button>
       </div>
     </div>
   );

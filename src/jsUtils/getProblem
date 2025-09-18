@@ -1,0 +1,16 @@
+
+// gets img progile of user
+export default async function getProblem(problemName) {
+
+    const token = localStorage.getItem("token");
+    console.log(token);
+    const url = import.meta.env.VITE_APP_API_URL;
+    const response = await fetch(`${url}api/user/problem/problem/${problemName}`, {
+        method : "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type" : "application/json",
+        },
+    });
+    return response;
+}

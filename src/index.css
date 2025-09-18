@@ -12,7 +12,12 @@
 }
 
 .bg-purple-100{
-  background-color: #9e9e9e;
+  background-color: #7664ac !important;
+  color: white !important;
+}
+
+.bg-light-grey{
+  background-color: #514574;
 }
 
 .profileImage{
