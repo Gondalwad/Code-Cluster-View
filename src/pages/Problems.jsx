@@ -3,9 +3,7 @@ import ProblemCard from "../components/problemCard";
 import getProblems from "../jsUtils/getProblems";
 
 export default function Problems() {
-  localStorage.setItem("token","eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJGaXJzdFVzZXIiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3NTgwOTMyOTQsImV4cCI6Nzk1MTEyNjM2NDQ1NTM0NX0.6pfqBV7VLQSq-DWCklWkUDxOqUstweME9MFybd2ZMadsNLUvZP_FiEKTHkt1JNShodhq0SZDSWhO0DOEmnTnNQ");
-
-
+  let key= 0 ;
   const [problemCount, setProblemCount] = useState(0);
   const [listOfProblems, setListOfProblems] = useState([]);
   useEffect(() => {
@@ -29,10 +27,10 @@ export default function Problems() {
       <section className="row gy-3 d-flex justify-content-around m-3">
         {
           listOfProblems.map((problem, index)=>(
-            <ProblemCard extraStyle={"col-3 shadow bg-purple-100"} problemDesc={problem.problemDescription} problemName={problem.problemName} problemNo={problem.problemNo}></ProblemCard>
+            <ProblemCard key = {key++}extraStyle={"col-3 shadow bg-purple-100"} problemDesc={problem.problemDescription} problemName={problem.problemName} problemNo={problem.problemNo}></ProblemCard>
           ))
         }
-      </section>=
+      </section>
     </div>
   );
 }

@@ -7,10 +7,11 @@ import user from "../../assets/img/user.png";
 export default function SignInOrProfile() {
   const [signInOrProfile, setSignInOrProfile] = useState(false);
   const [profileImg, setProfileImg] = useState(null);
-  const token = localStorage.getItem("token");
-
+  const [token, setToken] = useState(null);
+  
   useEffect(() => {
     const fetchData = async () => {
+      setToken(localStorage.getItem("token"));
       if (!token) {
         setSignInOrProfile(false);
         return;
@@ -46,7 +47,7 @@ export default function SignInOrProfile() {
         URL.revokeObjectURL(profileImg);
       }
     };
-  }, [token]);
+  },[profileImg]);
 
   return signInOrProfile ? (
     <Button

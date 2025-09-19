@@ -1,24 +1,41 @@
 import Editor from "@monaco-editor/react";
-import { useRef, useState } from "react";
+import { useState, useEffect } from "react";
 import { formatJava } from "../jsUtils/CodeFormatters";
 
-export default function ProblemEditor({codeSnippet}) {
+export default function ProblemEditor({codeSnippet, setCode}) {
 
-    const [codeValue, setCodeValue] = useState("// reload");
-    const editorRef = useRef(null);
-    const handleEditorDidMount = (editor, monaco) => {
-    editorRef.current = editor;
-  };
+    const [codeValue, setCodeValue] = useState(null);
+  
+// formats code
+  useEffect(() => {
+    let isMounted = true; // ✅ prevent updates after unmount
 
-  console.log(codeSnippet);
+    const formatCode = async () => {
+      if (!codeSnippet) {
+        if (isMounted) setCodeValue(null);
+        return;
+      }
+      try {
+        const formattedCode = await formatJava(codeSnippet);
+        if (isMounted) {
+          setCodeValue(formattedCode && formattedCode.trim() !== "" ? formattedCode : null);
+        }
+      } catch (err) {
+        console.error("Code formatting failed", err);
+        if (isMounted) setCodeValue(null);
+      }
+    };
+
+    formatCode();
+
+    return () => {
+      isMounted = false; // ✅ cleanup
+    };
+  }, [codeSnippet]);
     
-formatJava(codeSnippet).then((formattedCode) => {
-  console.log("Formatted:", formattedCode);
-  setCodeValue(formattedCode);
-});
-    console.log(codeValue);
   return (
     <Editor
+      onChange={(newCode)=> setCode(newCode)}
       height="70vh"
       language="java"
       value={codeSnippet!=null ? `${codeValue}` : "// re"}
@@ -28,7 +45,6 @@ formatJava(codeSnippet).then((formattedCode) => {
         minimap: { enabled: false },
         wordWrap: "on",
       }}
-      onMount={handleEditorDidMount}
     />
   );
 }
