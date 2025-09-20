@@ -1,8 +1,8 @@
 
-export default async function validator(sss){
+export default async function validator(){
 
     // const url = process.env.VITE_APP_API_URL;
-    const token = localStorage.getItem(token);
+    const token = localStorage.getItem("token");
     const url = import.meta.env.VITE_APP_API_URL;
     const response = await fetch(`${url}auth/validate`, {
         method : "GET",

@@ -5,14 +5,16 @@ import Logo from "../components/utils/Logo";
 export default function SignIn() {
   const [preferredId, setpreferredId] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // ✅ state for error
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage(""); // reset previous error
 
     const strongPass = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
     if (!strongPass.test(password)) {
-      alert("Password must be at least 8 characters with 1 number & 1 special character.");
+      setErrorMessage("Password must be at least 8 characters with 1 number & 1 special character.");
       return;
     }
 
@@ -23,22 +25,23 @@ export default function SignIn() {
         body: JSON.stringify({ preferredId, password }),
       });
 
-      if (!response.ok) {
-        throw new Error("Invalid credentials");
-      }
-
       const data = await response.json();
-      console.log(data.token);
-      // ✅ Save token in local storage
 
-      if (data.token) {
-        localStorage.setItem("token", data.token);
+      if (!response.ok) {
+        // Show backend message if available
+        setErrorMessage(data.message || "Invalid credentials, please try again.");
+        return;
       }
 
-      navigate("/"); // redirect after login
+      //  Save token in local storage
+      if (data.jwt) {
+        localStorage.setItem("token", data.jwt);
+      }
+
+      window.location.href="/";
     } catch (err) {
       console.error(err);
-      alert("Sign In failed. Please try again.");
+      setErrorMessage("Something went wrong. Please try again later.");
     }
   };
 
@@ -52,7 +55,7 @@ export default function SignIn() {
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label className="form-label">preferredId</label>
+            <label className="form-label">Preferred ID</label>
             <input
               type="text"
               className="form-control"
@@ -74,6 +77,13 @@ export default function SignIn() {
               required
             />
           </div>
+
+          {/* Inline Error Message */}
+          {errorMessage && (
+            <div className="alert alert-danger py-2" role="alert">
+              {errorMessage}
+            </div>
+          )}
 
           <div className="d-grid">
             <button type="submit" className="btn btn-primary">

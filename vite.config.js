@@ -6,5 +6,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     historyApiFallback: true,
+    host:"0.0.0.0",
+    allowedHosts:["b617ec29e200.ngrok-free.app"]
   },
+  
 })

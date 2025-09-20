@@ -3,69 +3,96 @@ import validator from "../../jsUtils/validate";
 import getProfileImg from "../../jsUtils/getImgProgile";
 import Button from "./button";
 import user from "../../assets/img/user.png";
+import { Link } from "react-router-dom";
 
 export default function SignInOrProfile() {
-  const [signInOrProfile, setSignInOrProfile] = useState(false);
-  const [profileImg, setProfileImg] = useState(null);
-  const [token, setToken] = useState(null);
-  
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [profileImg, setProfileImg] = useState(user); // default to dummy image
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
-      setToken(localStorage.getItem("token"));
-      if (!token) {
-        setSignInOrProfile(false);
+      const currentToken = localStorage.getItem("token");
+
+      if (!currentToken) {
+        setIsAuthenticated(false);
+        setProfileImg(user);
+        setLoading(false);
         return;
       }
 
       try {
-        const response = await validator(token);
+        // Validate token
+        const response = await validator();
         if (response.ok) {
-          const img = await getProfileImg(token);
-          if (img instanceof Blob) {
-            const objectUrl = URL.createObjectURL(img);
-            setProfileImg(objectUrl);
-            setSignInOrProfile(true);
-          } else {
-            console.warn("Invalid blob returned");
+          setIsAuthenticated(true);
+
+          // Try to get profile image
+          try {
+            const img = await getProfileImg();
+
+            if (img != null ) {
+              setProfileImg(img);
+            } else {
+              setProfileImg(user);
+            }
+          } catch (imgError) {
+            console.warn("Profile image fetch failed, using default", imgError);
             setProfileImg(user);
-            setSignInOrProfile(true);
           }
         } else {
-          setSignInOrProfile(false);
+          // Token invalid
+          setIsAuthenticated(false);
+          setProfileImg(user);
+          localStorage.removeItem("token");
         }
       } catch (err) {
-        console.error("Validation or image load failed", err);
-        setSignInOrProfile(false);
+        console.error("Validation failed", err);
+        setIsAuthenticated(false);
+        setProfileImg(user);
+        localStorage.removeItem("token");
       }
+
+      setLoading(false);
     };
 
     fetchData();
+  }, []);
 
-    // Optional cleanup: Revoke object URL on unmount
+  // cleanup for blob URL
+  useEffect(() => {
     return () => {
-      if (profileImg) {
+      if (profileImg && profileImg.startsWith("blob:")) {
         URL.revokeObjectURL(profileImg);
       }
     };
-  },[profileImg]);
+  }, [profileImg]);
 
-  return signInOrProfile ? (
-    <Button
-      redirect="/profile"
-      className="profileImage"
-      value={
-        <img
-          className="img"
-          src={profileImg}
-          alt="Profile"
-          
-        />
-      }
-    />
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    setIsAuthenticated(false);
+    setProfileImg(user);
+    window.location.href = "/";
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  return isAuthenticated ? (
+    <div className="authenticated-user">
+        <Link to="/profile col">
+          <img className = "profileImage ms-1 m-1 bg-light" src={profileImg} alt="Profile" />
+        </Link>
+      <Button
+        onClick={handleSignOut}
+        value="Sign Out"
+      />
+    </div>
   ) : (
-    <div>
-    <Button  redirect="/signIn" value="Sign In" />
-    <Button  redirect="/signUp" value="Sign Up" />
+    <div className="unauthenticated-user">
+      <Button redirect="/signIn" value="Sign In" extrastyle="btn btn-primary me-2" />
+      <Button redirect="/signUp" value="Sign Up" extrastyle="btn btn-secondary" />
     </div>
   );
 }
